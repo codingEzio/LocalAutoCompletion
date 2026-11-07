@@ -1,0 +1,7 @@
+{
+  "extension.displayName": "X-LocalAutoCompletion",
+  "extension.description": "Fast local word completion from the current file and offline English.",
+  "configuration.title": "X-LocalAutoCompletion",
+  "configuration.enabled.description": "Enable local file and English word completions.",
+  "configuration.minimumPrefixLength.description": "Characters required before a completion is offered."
+}

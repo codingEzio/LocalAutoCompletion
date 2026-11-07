@@ -1,0 +1,7 @@
+{
+  "extension.displayName": "X-LocalAutoCompletion",
+  "extension.description": "현재 파일과 오프라인 영어 어휘를 바탕으로 빠르게 단어를 완성합니다.",
+  "configuration.title": "X-LocalAutoCompletion",
+  "configuration.enabled.description": "현재 파일 및 영어 단어 완성을 사용합니다.",
+  "configuration.minimumPrefixLength.description": "완성 후보를 표시하기 전에 필요한 문자 수입니다."
+}

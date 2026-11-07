@@ -1,0 +1,30 @@
+# Build artifacts and macOS metadata.
+dist/
+*.vsix
+.DS_Store
+
+# Per-developer VS Code state. The launcher is intentionally shared.
+.vscode/*
+!.vscode/launch.json
+*.code-workspace
+.vscode-test/
+
+# Local credentials, generated diagnostics, and disposable output.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.log
+.cache/
+coverage/
+config/tool_output.json
+
+# Private local preparation records and recovery copies.
+/Local/
+
+# Generated from a user-supplied vocabulary; never commit by accident.
+/data/english.json
+/data/vocabulary-receipt.json

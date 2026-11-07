@@ -1,0 +1,7 @@
+{
+  "extension.displayName": "X-LocalAutoCompletion",
+  "extension.description": "Швидке локальне доповнення слів за поточним файлом і офлайн-англійською лексикою.",
+  "configuration.title": "X-LocalAutoCompletion",
+  "configuration.enabled.description": "Увімкнути локальне доповнення слів із файла й англійського словника.",
+  "configuration.minimumPrefixLength.description": "Мінімальна кількість символів перед показом варіантів доповнення."
+}

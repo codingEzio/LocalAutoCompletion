@@ -1,0 +1,7 @@
+{
+  "extension.displayName": "X-LocalAutoCompletion",
+  "extension.description": "現在のファイルとオフライン英語語彙を使って、単語をすばやく補完します。",
+  "configuration.title": "X-LocalAutoCompletion",
+  "configuration.enabled.description": "現在のファイル内の単語と英語語彙による補完を有効にします。",
+  "configuration.minimumPrefixLength.description": "補完候補を表示するまでに必要な文字数です。"
+}

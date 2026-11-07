@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title description">
+  <title id="title">X-LocalAutoCompletion</title>
+  <desc id="description">A typing cursor completing a word.</desc>
+  <rect id="background" width="128" height="128" fill="#182033"/>
+  <rect id="typed-prefix" x="18" y="49" width="32" height="28" rx="6" fill="#F1F5F9"/>
+  <rect id="cursor" x="57" y="30" width="8" height="68" rx="4" fill="#F08A69"/>
+  <rect id="completion-suffix" x="72" y="49" width="38" height="28" rx="6" fill="#F7B29A"/>
+</svg>

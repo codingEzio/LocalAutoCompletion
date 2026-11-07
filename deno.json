@@ -1,0 +1,18 @@
+{
+  "tasks": {
+    "fmt": "deno fmt --check deno.json package.json package-files.json extension.js src scripts test",
+    "lint": "deno lint extension.js src scripts test",
+    "test": "deno test --allow-read=. --ignore=test/package_test.ts test",
+    "check": "deno task fmt && deno task lint && deno task test",
+    "vocabulary": "deno run --allow-read --allow-write=data scripts/import-vocabulary.ts",
+    "package": "deno run --allow-read --allow-write --allow-run=zip,unzip scripts/package.ts",
+    "test:package": "deno test --allow-read --allow-write --allow-run=deno,zip,unzip test/package_test.ts",
+    "package:verify": "deno task package --verify",
+    "maintenance": "deno task check && deno task test:package && deno task package && deno task package:verify"
+  },
+  "fmt": {
+    "lineWidth": 100,
+    "semiColons": true,
+    "singleQuote": false
+  }
+}

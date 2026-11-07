@@ -1,0 +1,7 @@
+{
+  "extension.displayName": "X-LocalAutoCompletion",
+  "extension.description": "从当前文件和离线英文词汇中快速补全单词。",
+  "configuration.title": "X-LocalAutoCompletion",
+  "configuration.enabled.description": "启用本地文件和英文单词补全。",
+  "configuration.minimumPrefixLength.description": "显示补全建议前所需的字符数。"
+}

@@ -1,0 +1,7 @@
+{
+  "extension.displayName": "X-LocalAutoCompletion",
+  "extension.description": "Autocompletado local rápido de palabras a partir del archivo actual y del vocabulario inglés sin conexión.",
+  "configuration.title": "X-LocalAutoCompletion",
+  "configuration.enabled.description": "Activar el autocompletado local de palabras del archivo y del vocabulario inglés.",
+  "configuration.minimumPrefixLength.description": "Número de caracteres necesarios antes de ofrecer una sugerencia."
+}

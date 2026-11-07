@@ -1,0 +1,60 @@
+{
+  "name": "x-local-auto-completion",
+  "displayName": "%extension.displayName%",
+  "description": "%extension.description%",
+  "version": "0.5.2",
+  "publisher": "codingEzio",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codingEzio/X-LocalAutoCompletion.git"
+  },
+  "homepage": "https://github.com/codingEzio/X-LocalAutoCompletion#readme",
+  "bugs": {
+    "url": "https://github.com/codingEzio/X-LocalAutoCompletion/issues"
+  },
+  "icon": "assets/icon.png",
+  "engines": {
+    "vscode": "^1.97.0"
+  },
+  "categories": [
+    "Other",
+    "Programming Languages"
+  ],
+  "keywords": [
+    "autocomplete",
+    "completion",
+    "local",
+    "offline",
+    "english"
+  ],
+  "galleryBanner": {
+    "color": "#182033",
+    "theme": "dark"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "%configuration.title%",
+      "properties": {
+        "localAutoCompletion.enabled": {
+          "type": "boolean",
+          "default": true,
+          "scope": "resource",
+          "description": "%configuration.enabled.description%"
+        },
+        "localAutoCompletion.minimumPrefixLength": {
+          "type": "number",
+          "default": 2,
+          "minimum": 1,
+          "maximum": 6,
+          "scope": "resource",
+          "description": "%configuration.minimumPrefixLength.description%"
+        }
+      }
+    }
+  }
+}

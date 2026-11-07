@@ -1,0 +1,7 @@
+{
+  "extension.displayName": "X-LocalAutoCompletion",
+  "extension.description": "從目前檔案與離線英文詞彙快速補全單字。",
+  "configuration.title": "X-LocalAutoCompletion",
+  "configuration.enabled.description": "啟用本機檔案與英文單字補全。",
+  "configuration.minimumPrefixLength.description": "顯示補全建議前所需的字元數。"
+}
