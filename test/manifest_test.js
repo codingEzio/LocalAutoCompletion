@@ -23,7 +23,7 @@ Deno.test("the product is file plus English completion only", () => {
 });
 
 Deno.test("the public package points back to its GitHub project", () => {
-  const repository = "https://github.com/codingEzio/X-LocalAutoCompletion";
+  const repository = "https://github.com/codingEzio/LocalAutoCompletion";
   if (metadata.repository?.url !== `${repository}.git`) {
     throw new Error(`unexpected repository: ${JSON.stringify(metadata.repository)}`);
   }

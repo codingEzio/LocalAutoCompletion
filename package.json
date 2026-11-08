@@ -7,11 +7,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/codingEzio/X-LocalAutoCompletion.git"
+    "url": "https://github.com/codingEzio/LocalAutoCompletion.git"
   },
-  "homepage": "https://github.com/codingEzio/X-LocalAutoCompletion#readme",
+  "homepage": "https://github.com/codingEzio/LocalAutoCompletion#readme",
   "bugs": {
-    "url": "https://github.com/codingEzio/X-LocalAutoCompletion/issues"
+    "url": "https://github.com/codingEzio/LocalAutoCompletion/issues"
   },
   "icon": "assets/icon.png",
   "engines": {
