@@ -239,49 +239,88 @@ try {
       await Deno.realPath(outputDirectory) !== outputDirectory ||
       !(await Deno.lstat(outputDirectory)).isDirectory
     ) throw Error("Output directory must not be a symlink");
-    for (const target of [outputPath, outputPath + ".receipt.json"]) {
+    const targets = [outputPath, outputPath + ".receipt.json"];
+    const present = [];
+    for (const target of targets) {
       try {
         const info = await Deno.lstat(target);
         if (!info.isFile || info.isSymlink) {
           throw Error("Existing package output must be a regular file");
         }
+        present.push(true);
       } catch (error) {
         if (!(error instanceof Deno.errors.NotFound)) throw error;
+        present.push(false);
       }
     }
-    const pending = await Deno.makeTempFile({
-      dir: outputDirectory,
-      prefix: "delete_after_use_package_",
-    });
-    const pendingReceipt = pending + ".json";
-    try {
-      await Deno.copyFile(candidate, pending);
-      if (await hash(await Deno.readFile(pending)) !== receipt.artifactSHA256) {
-        throw Error("Candidate copy differs before publication to dist");
+    if (present.some(Boolean)) {
+      if (!present.every(Boolean)) {
+        throw Error(
+          "Incomplete package output pair; inspect and preserve existing files before retrying",
+        );
       }
-      await Deno.writeTextFile(pendingReceipt, JSON.stringify(receipt, null, 2) + "\n", {
-        createNew: true,
+      const existing = await verifyArchive(outputPath).catch((error: unknown) => {
+        throw new Error(
+          "Existing package output cannot be verified against current inputs; preserve it and use a separate checkout or version",
+          { cause: error },
+        );
       });
-      await Deno.rename(pending, outputPath);
-      await Deno.rename(pendingReceipt, outputPath + ".receipt.json");
+      const stored = JSON.parse(await Deno.readTextFile(targets[1]));
       if (
-        await hash(await Deno.readFile(outputPath)) !== receipt.artifactSHA256 ||
-        JSON.stringify(JSON.parse(await Deno.readTextFile(outputPath + ".receipt.json"))) !==
-          JSON.stringify(receipt)
-      ) throw Error("Final package/receipt readback failed");
-    } finally {
-      for (const path of [pending, pendingReceipt]) {
-        await removeIfPresent(path);
+        JSON.stringify(stored) !== JSON.stringify(existing) ||
+        existing.artifactSHA256 !== receipt.artifactSHA256
+      ) {
+        throw Error(
+          "Existing package output differs; preserve it and use a separate checkout or version",
+        );
       }
+      console.log(
+        JSON.stringify({
+          artifact: existing.artifact,
+          files: files.length,
+          readback: "exact; existing pair retained",
+          artifactSHA256: existing.artifactSHA256,
+        }),
+      );
+    } else {
+      const pending = await Deno.makeTempFile({
+        dir: outputDirectory,
+        prefix: "delete_after_use_package_",
+      });
+      let pendingReceipt: string | undefined;
+      try {
+        pendingReceipt = await Deno.makeTempFile({
+          dir: outputDirectory,
+          prefix: "delete_after_use_receipt_",
+        });
+        await Deno.copyFile(candidate, pending);
+        if (await hash(await Deno.readFile(pending)) !== receipt.artifactSHA256) {
+          throw Error("Candidate copy differs before publication to dist");
+        }
+        await Deno.writeTextFile(pendingReceipt, JSON.stringify(receipt, null, 2) + "\n");
+        // Publish the receipt first so the installable VSIX path appears only
+        // after its receipt exists. A crash may leave a receipt without a VSIX;
+        // the next run rejects the incomplete pair and preserves it for review.
+        await Deno.link(pendingReceipt, outputPath + ".receipt.json");
+        await Deno.link(pending, outputPath);
+        if (
+          await hash(await Deno.readFile(outputPath)) !== receipt.artifactSHA256 ||
+          JSON.stringify(JSON.parse(await Deno.readTextFile(outputPath + ".receipt.json"))) !==
+            JSON.stringify(receipt)
+        ) throw Error("Final package/receipt readback failed");
+      } finally {
+        await removeIfPresent(pending);
+        if (pendingReceipt) await removeIfPresent(pendingReceipt);
+      }
+      console.log(
+        JSON.stringify({
+          artifact: receipt.artifact,
+          files: files.length,
+          readback: "exact",
+          artifactSHA256: receipt.artifactSHA256,
+        }),
+      );
     }
-    console.log(
-      JSON.stringify({
-        artifact: receipt.artifact,
-        files: files.length,
-        readback: "exact",
-        artifactSHA256: receipt.artifactSHA256,
-      }),
-    );
   }
 } finally {
   await Deno.remove(staging, { recursive: true });

@@ -61,6 +61,45 @@ Deno.test("VSIX packaging is explicit, reproducible and preserves prior output o
       original,
       "same selected inputs produce identical ZIP bytes",
     );
+    const packagePath = join(fixture, "package.json");
+    const packageBytes = await Deno.readFile(packagePath);
+    const changed = JSON.parse(new TextDecoder().decode(packageBytes));
+    changed.description = "synthetic different package";
+    await Deno.writeTextFile(packagePath, JSON.stringify(changed));
+    const collision = await run();
+    assert.notEqual(collision.code, 0, "same-version collision must fail");
+    assert.equal(
+      new TextDecoder().decode(collision.stderr).includes("Existing package output"),
+      true,
+      "collision should explain how to preserve the existing package",
+    );
+    assert.deepEqual(await Deno.readFile(output), original, "collision preserves package");
+    assert.equal(
+      await Deno.readTextFile(output + ".receipt.json"),
+      receipt,
+      "collision preserves receipt",
+    );
+    await Deno.writeFile(packagePath, packageBytes);
+    await Deno.remove(output + ".receipt.json");
+    assert.notEqual((await run()).code, 0, "partial pair must fail");
+    assert.deepEqual(await Deno.readFile(output), original, "partial pair preserves package");
+    await Deno.writeTextFile(output + ".receipt.json", receipt);
+    await Deno.remove(output);
+    assert.notEqual((await run()).code, 0, "receipt-only pair must fail");
+    assert.equal(
+      await Deno.readTextFile(output + ".receipt.json"),
+      receipt,
+      "partial pair preserves receipt",
+    );
+    await Deno.remove(output + ".receipt.json");
+    const concurrent = await Promise.all([run(), run()]);
+    assert.equal(
+      concurrent.some((result) => result.success),
+      true,
+      "one package writer must succeed",
+    );
+    success(await run("--verify"));
+    assert.deepEqual(await Deno.readFile(output), original, "concurrent package matches candidate");
     const recorded = JSON.parse(receipt);
     assert.equal(recorded.files.length, selection.files.length + 2);
     assert.equal(
